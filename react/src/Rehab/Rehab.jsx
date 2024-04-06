@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import Mediapipe from "./Mediapipe";
 import Webcam from "react-webcam";
 import Button from "react-bootstrap/Button";
 import rehabbg from "../assets/rehabbg.avif";
@@ -14,13 +15,20 @@ export default function Rehab() {
     if (isRecording) {
       intervalID.current = setInterval(() => {
         countRef.current += 1;
-        // console.log(countRef.current);
       }, 10);
     } else {
       clearInterval(intervalID.current);
       countRef.current = 0;
     }
   }, [isRecording]);
+
+  async function processImg() {
+    console.log(image)
+    console.log("processing")
+    // const result = await ocrSpace(image, {apiKey: "K83644090688957"})
+    // console.log(result)
+    
+  }
 
   return (
     <>
@@ -59,7 +67,12 @@ export default function Rehab() {
         </h1>
         {isRecording && (
           <>
-            <Webcam ref={webRef} width="600" />
+            {/* <Webcam ref={webRef} width="600" /> */}
+            <Mediapipe style={{width: "600px"}}/>
+            <Button variant="primary" onClick={() => {
+              setImage(webRef.current.getScreenshot())
+              processImg()
+            }}>Process image</Button>
           </>
         )}
         <Button
@@ -71,8 +84,6 @@ export default function Rehab() {
         >
           {isRecording ? "Get results" : "Start hand rehabilitation"}
         </Button>
-
-        <img src={image} />
       </div>
     </>
   );
